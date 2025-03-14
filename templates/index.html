@@ -1,0 +1,897 @@
+{% load static %}
+<link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+<link rel="icon" href="{% static 'images/lyra.svg' %}" type="image/x-icon" />
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyra - Link Your Rhythms Anytime</title>
+    <style>
+        #glcanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+
+        .search-icon {
+            position: absolute;
+            color: gray;
+            margin-left: 15px;
+            z-index: 1;
+            width: 30px;
+            height: 30px;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            padding-top: 35px;
+            margin-top: 100px;
+            background: linear-gradient(to bottom left, #1D1458 0%, #281B7A 35%, #312195 77%, #3F2ABE 99%);
+            color: white;
+            position: fixed;
+            height: 100%;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            color: white;
+            overflow-y: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, #263CB0, #302b63 20%, #182B6E 30%);
+            padding: 10px;
+            height: 80px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* padding: 10px 20px; */
+
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            width: 100px;
+            padding-left: 20px;
+        }
+
+        .search-bar {
+            margin: 0 auto;
+            display: inline-flex;
+            align-items: center;
+        }
+
+
+
+        .actions {
+            display: flex;
+            align-items: center;
+            margin-right: 25px;
+        }
+
+        .install-btn {
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .sign-in-btn {
+            background-color: #E3E3E3;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .sidebar .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 16px;
+            margin: 15px 10px;
+            border-radius: 12px;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .sidebar .menu-item:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .album-cover {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+            margin-top: 105px;
+            margin-left:185px;
+        }
+
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(-100%, 0);
+            }
+        }
+
+        .button-send {
+
+            align-items: center;
+            appearance: none;
+            background-color: #fff;
+            border-radius: 24px;
+            border-style: none;
+            box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0;
+            box-sizing: border-box;
+            color: gray;
+            cursor: pointer;
+            display: inline-flex;
+            fill: currentcolor;
+            font-family: "Google Sans", Roboto, Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            height: 48px;
+            justify-content: center;
+            letter-spacing: .25px;
+            line-height: normal;
+            max-width: 100%;
+            overflow: visible;
+            padding: 2px 24px;
+            position: relative;
+            text-align: center;
+            text-transform: none;
+            user-select: none;
+
+            width: auto;
+            display: none;
+            z-index: 0;
+            height: 20px;
+            padding-left: 3px;
+            padding-right: 5px;
+            border-radius: 25px;
+            margin-left: -35px;
+        }
+
+        .button-send:hover {
+            background: #F6F9FE;
+            color: #60DCFF;
+        }
+
+        .button-send:active {
+            box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+
+        }
+
+        .button-send:focus {
+
+            border: 2px solid #60DCFF;
+        }
+
+        .my-form {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 10px;
+            padding-left: 42px;
+        }
+
+        .result-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .result-item {
+            flex: 1 1 calc(25% - 20px);
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        .result-item img {
+            max-width: 640px;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .result-item a {
+            display: block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #1db954;
+        }
+
+        .result-item .type {
+            font-weight: bold;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        h2,
+        h3 {
+            color: #1db954;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2em;
+        }
+
+        h3 {
+            font-size: 1.5em;
+        }
+
+        .app-main {
+            padding-left: 280px;
+            padding-right: 100px;
+            overflow-y: auto;
+            height: 100%
+        }
+
+        .image-spacing {
+            margin: 0 25px;
+            /* 左右各添加10px的间距 */
+        }
+
+        .sidebar-btn {
+            width: 144px;
+            height: 53px;
+            margin-right: 10px;
+            background-color: #E3E3E3;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            margin-left: 10px;
+            cursor: pointer
+        }
+
+        .sidebar-btn-text {
+            font-size: 32px;
+        }
+
+        .sidebar-row-btn-text {
+            font-size: 20px;
+        }
+
+        .sidebar-row-btn {
+            width: 116px;
+            height: 33px;
+            margin-right: 10px;
+            background-color: #E3E3E3;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-item-row {
+            display: flex;
+            margin-bottom: 15px;
+
+            cursor: pointer;
+        }
+
+        .fav-frame {
+            
+            width: calc(100% - 25px);
+            padding: 10px;
+            height: calc(100% - 350px);
+
+            position: relative;
+
+            margin: 5px;
+            display: inline-block;
+            font-size: 30px;
+            display: none;
+        }
+
+        .fav-frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            padding: 1px;
+            /* control the border thickness */
+            background: linear-gradient(90deg, #CE0FC6 0%, #680864 100%);
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .my-favorite-container {
+            padding-left: 20px;
+            padding-right: 20px;
+
+        }
+
+        .left-search-btn {
+            display: flex;
+        }
+
+        .icon-container {
+            visibility: hidden;
+            margin-right: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            /* 使图标在小屏幕时换行 */
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .icon {
+            height: 60px;
+            margin-right: 20px;
+        }
+
+        /* 移动设备样式 */
+        @media (max-width: 768px) {
+            .icon {
+                height: 10px;
+                /* 调整图标大小 */
+                margin-right: 2px;
+            }
+        }
+
+        /* 平板设备样式 */
+        @media (max-width: 1024px) {
+            .icon {
+                height: 10px;
+                /* 调整图标大小 */
+                margin-right: 2px;
+            }
+        }
+
+        /* 平板设备样式 */
+        @media (max-width: 1440px) {
+            .icon {
+                height: 30px;
+                /* 调整图标大小 */
+                margin-right: 5px;
+            }
+        }
+
+        .file-input-container {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .file-input-container input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+        }
+
+        .file-input-container img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .search-input-bar {
+            height: 60px;
+            transition: all 0.3s ease;
+            width: 170px;
+            border: 2px solid #D1D5DB;
+            border-radius: 9999px;
+            padding-left: 50px;
+            font-size: larger;
+            text-overflow: ellipsis;
+            padding-right: 15px;
+        }
+
+        .search-input-bar:focus-within {
+            width: 250px;
+            border: 2px solid #60DCFF;
+            outline-color: #60DCFF;
+            outline-style: outset;
+            padding-right: 55px;
+        }
+
+        .input-search-bar-container:focus-within .search-icon {
+            color: #60DCFF;
+        }
+
+        .input-search-bar-container:focus-within .clear-icon {
+            display: block;
+            color: #838383;
+            position: absolute;
+            right: 1px;
+            z-index: 1001;
+            cursor: pointer;
+        }
+
+        .clear-icon {
+            position: absolute;
+            display: none;
+            z-index: 1001;
+        }
+
+        .input-search-bar-container {
+            position: absolute;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .input-search-bar-container:focus-within .button-send {
+            display: block;
+            right: 20px;
+        }
+
+
+        .mostly-customized-scrollbar::-webkit-scrollbar {
+            width: 5px;
+            height: 8px;
+            background-color: #aaa;
+            /* or add it to the track */
+        }
+
+        /* Add a thumb */
+        .mostly-customized-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom left, #1D1458 0%, #281B7A 35%, #312195 77%, #3F2ABE 99%);
+        }
+
+        #loading-overlay {
+            display: none;
+            /* 預設隱藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            /* 黑色半透明背景 */
+            z-index: 9999;
+            /* 確保在最上層 */
+        }
+
+        #loading-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .sidebar .button-group button {
+            flex: 1;
+            background: white;
+            color: #2E3192;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .sidebar .button-group button:hover {
+            background: #ddd;
+        }
+    </style>
+
+
+</head>
+<body>
+    <div id="loading-overlay">
+        <div id="loading-content">
+            <!-- 這裡放置你的SVG -->
+
+
+            <img src="{% static 'images/lyra-rgb.svg' %}" style="height: 300px;width:400px;" alt="loading">
+
+
+            <img src="{% static 'images/slogan-rgb.svg' %}" style="height: 100px;width:400px;" alt="loading">
+
+        </div>
+    </div>
+    <div class="container">
+        <div style="height: 100%;max-height:100%">
+            <div class="sidebar">
+
+                <div class="menu-item">
+                    <img src="{% static 'images/home.svg' %}" alt="" style="height:60px;width:60px;">
+
+
+                    <span>Home
+                    </span>
+
+
+                </div>
+                <div class="menu-item">
+                    <img src="{% static 'images/explore.svg' %}" alt="" style="height:60px;width:60px;">
+
+                    <span>Explore</span>
+                </div>
+                <div class="menu-item">
+                    <img src="{% static 'images/library-music.svg' %}" alt="" style="height:60px;width:60px;">
+
+                    <span>Library</span>
+                </div>
+
+                <div class="button-group">
+                    <button>Playlists
+                    </button>
+                    <button>Artists
+                    </button>
+                </div>
+
+                <div class="my-favorite-container">
+                    <div class="fav-frame">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header">
+            <div style="display:flex;width:100%;justify-content:space-between;align-items:center;">
+                <div class="logo">
+                    <img src="{% static 'images/lyra-rgb.svg' %}" style="height:93px;width:93px" alt="logo">
+                    <img src="{% static 'images/lyra-text.svg' %}" style="height:100px;width:100px;margin-left:25px"
+                        alt="">
+                </div>
+                <div class="search-bar">
+
+                    <div class="left-search-btn">
+
+                        <form id="uploadForm" action="{% url 'search' %}" method="post" enctype="multipart/form-data"
+                            style="margin-top:5px;">
+                            {% csrf_token %}
+                            <label class="file-input-container">
+
+                                <img src="{% static 'images/camera-fill.svg' %}" alt=""
+                                    style="width:77px;height:80px;padding-left:200px;">
+                                <input type="file" name="file" accept=".png,.jpg,.jpeg" onchange="autoImageSubmit()">
+                                <button style="display:none" id="upload-image-btn" type="submit" name="upload"></button>
+                            </label>
+
+
+                            <script>
+                                function autoImageSubmit() {
+                                    document.getElementById('upload-image-btn').click();
+                                    document.getElementById('loading-overlay').style.display = 'block';
+                                }
+                            </script>
+                            {% if alert_message %}
+                            <script type="text/javascript">
+                                alert("{{ alert_message }}");
+                            </script>
+                            {% endif %}
+
+                        </form>
+
+
+                        {% if error %}
+                        <script type="text/javascript">
+                            alert("{{ error }}");
+                        </script>
+                        {% endif %}
+
+                        <!-- <object type="image/svg+xml" data="{% static 'images/camera-fill.svg' %}" class="svg-object"></object> -->
+
+                        <!-- <img src="{% static 'images/Mic.svg' %}" alt=""
+                            style="width:77px;height:75px;margin-left:10px;margin-right:5px;margin-top:6px;"> -->
+
+                        <form id="uploadForm" action="{% url 'search' %}" method="post" enctype="multipart/form-data"
+                            style="margin-top:5px;">
+                            {% csrf_token %}
+                            <label class="file-input-container">
+                                <img src="{% static 'images/file.svg' %}"
+                                    style="width:77px;height:80px;margin-right:42px;margin-left:15px;"
+                                    alt="Choose File">
+                                <input type="file" name="file" accept=".csv,.pdf,.docx,.txt" onchange="autoSubmit()">
+                                <button style="display:none" id="upload-btn" type="submit" name="upload"></button>
+                            </label>
+
+
+                            <script>
+                                function autoSubmit() {
+                                    document.getElementById('upload-btn').click();
+                                }
+                            </script>
+
+                        </form>
+                    </div>
+                    <form action="{% url 'search' %}" method="post" enctype="multipart/form-data" class="my-form">
+                        {% csrf_token %}
+
+
+                        <!-- <input type="text" name="query" placeholder="Search songs, albums, artists"> -->
+
+
+                        <div class="input-search-bar-container">
+                            <i class="fa fa-search fa-2x search-icon" aria-hidden="true"></i>
+                            <input type="text" name="query" id="search-input" placeholder="Search..."
+                                class="search-input-bar pl-10 py-2 rounded-full focus:outline-none bg-white placeholder-gray-500 text-gray-900">
+                            <!-- <i class="fas fa-search search-icon absolute left-4 top-3 text-gray-500"></i> -->
+                            <button id="send-btn" vlaue="search" name="search" style="border-style:hidden;z-index:1001"
+                                type="submit" class="button-send" role="button">
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            </button>
+
+                            <i class="fas fa-times clear-icon absolute right-4 top-3 text-gray-500 cursor-pointer"></i>
+                        </div>
+
+                        <script>
+                            // Get the clear icon
+                            const clearIcon = document.querySelector('.clear-icon');
+                            document.querySelector('.clear-icon').addEventListener('mousedown', function (event) {
+                                event.preventDefault(); // 阻止焦點變化
+                            });
+
+
+                            document.querySelector('.clear-icon').addEventListener('mousedown', function (event) {
+                                event.preventDefault(); // 阻止焦點變化
+                            });
+
+                            // Add click event to the clear icon
+                            clearIcon.addEventListener('click', function (event) {
+
+
+                                // Clear the input field
+                                const inputField = clearIcon.parentElement.querySelector('#search-input');
+                                inputField.value = '';
+                            });
+
+                            document.querySelector('.button-send').addEventListener('mousedown', function (event) {
+                                event.preventDefault(); // 防止默認提交行為
+                                event.stopImmediatePropagation()
+                                const form = document.querySelector('.my-form');
+                                form.submit(); // 手動提交表單
+                            });
+
+                            document.querySelector('.button-send').addEventListener('click', function (event) {
+                                event.preventDefault(); // 防止默認提交行為
+                                event.stopImmediatePropagation()
+                            });
+                        </script>
+
+                        <!-- <i class="fa fa-paper-plane" aria-hidden="true" id="submitBtn"></i> -->
+                    </form>
+                    <!-- <script>
+                    document.getElementById('submitBtn').addEventListener('click', function() {
+                        document.getElementById('myForm').submit();
+                    });
+                </script> -->
+                </div>
+
+                <div class="icon-container">
+                    <img class="icon image-spacing" src="{% static 'images/install-option.svg' %}" alt="">
+                    <img class="icon image-spacing" src="{% static 'images/instagram.svg' %}" alt="">
+                    <img class="icon image-spacing" src="{% static 'images/facebook.svg' %}" alt="">
+                    <img class="icon image-spacing" src="{% static 'images/bell.svg' %}" alt="">
+                    <img class="icon image-spacing" src="{% static 'images/baseline-menu.svg' %}" alt="">
+                </div>
+                <div class="actions">
+                    <!-- <button class="install-btn">Install App</button> -->
+                    <button class="sign-in-btn">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        Sign In</button>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+
+
+            <div class="marquee">
+                <span>Link Your Rhythms Anytime ! Link Your Rhythms Anytime ! Link Your Rhythms Anytime ! Link Your
+                    Rhythms Anytime !</span>
+            </div>
+
+            <main class="app-main mostly-customized-scrollbar">
+                {% block content %}{% endblock %}
+            </main>
+
+            <!--             
+            <div class="album-grid">
+                <img class="album-cover" src="https://example.com/album1.jpg" alt="Album cover showing people in a vintage car" width="150" height="150">
+                <img class="album-cover" src="https://example.com/album2.jpg" alt="Album cover showing people in a vintage car" width="150" height="150">
+                <img class="album-cover" src="https://example.com/album3.jpg" alt="Album cover showing people in a vintage car" width="150" height="150">
+                <img class="album-cover" src="https://example.com/album4.jpg" alt="Album cover showing people in a vintage car" width="150" height="150">
+                <img class="album-cover" src="https://example.com/album5.jpg" alt="Album cover showing people in a vintage car" width="150" height="150">
+                <img class="album-cover" src="https://example.com/album6.jpg" alt="Album cover showing people in a vintage car" width="150" height="150">
+            </div> -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const marquee = document.querySelector('.marquee span');
+            marquee.addEventListener('animationiteration', () => {
+                marquee.style.animation = 'none';
+                marquee.offsetHeight; /* trigger reflow */
+                marquee.style.animation = null;
+            });
+        });
+    </script>
+    <canvas id="glcanvas"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        var canvas = document.getElementById('glcanvas');
+        var renderer = new THREE.WebGLRenderer({ canvas: canvas });
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var starsCount = 15000;
+
+        // Create a star shape using BufferGeometry
+        var starGeometry = new THREE.BufferGeometry();
+        var positions = new Float32Array(starsCount * 3);
+        var sizes = new Float32Array(starsCount);
+        var colors = new Float32Array(starsCount * 3);
+
+        for (var i = 0; i < starsCount; i++) {
+            positions[i * 3] = Math.random() * 2000 - 1000;
+            positions[i * 3 + 1] = Math.random() * 2000 - 1000;
+            positions[i * 3 + 2] = Math.random() * 2000 - 1000;
+            sizes[i] = Math.random() * 1.5 + 0.5;
+            var color = new THREE.Color(Math.random(), Math.random(), Math.random());
+            colors[i * 3] = color.r;
+            colors[i * 3 + 1] = color.g;
+            colors[i * 3 + 2] = color.b;
+        }
+
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        starGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+        starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        // Create a star-shaped fragment shader
+        var starFragmentShader = `
+            precision mediump float;
+            uniform float size;
+            varying vec3 vColor;
+        
+            float sdStar5(vec2 p, float r, float rf)
+            {
+                const vec2 k1 = vec2(0.809016994375, -0.587785252292);
+                const vec2 k2 = vec2(-k1.x,k1.y);
+                p.x = abs(p.x);
+                p -= 2.0*max(dot(k1,p),0.0)*k1;
+                p -= 2.0*max(dot(k2,p),0.0)*k2;
+                p.x = abs(p.x);
+                p.y -= r;
+                vec2 ba = rf*vec2(-k1.y,k1.x) - vec2(0,1);
+                float h = clamp( dot(p,ba)/dot(ba,ba), 0.0, r );
+                return length(p-ba*h) * sign(p.y*ba.x-p.x*ba.y);
+            }
+        
+            void main() {
+                vec2 p = (gl_PointCoord - 0.5) * 2.0;
+                float d = sdStar5(p, 0.5, 0.5);
+                if (d > 0.0) {
+                    discard;
+                }
+                gl_FragColor = vec4(vColor, 1.0);
+            }
+        `;
+
+        // Create a star-shaped vertex shader
+        var starVertexShader = `
+            attribute float size;
+            attribute vec3 color;
+            varying vec3 vColor;
+            void main() {
+                vColor = color;
+                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                gl_PointSize = size * (300.0 / -mvPosition.z);
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `;
+
+        var starMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                size: { value: 1.5 }
+            },
+            vertexShader: starVertexShader,
+            fragmentShader: starFragmentShader,
+            transparent: true,
+            depthTest: false
+        });
+
+        var stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+
+        camera.position.z = 100;
+
+        function resizeCanvas() {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            stars.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('load', resizeCanvas);
+        resizeCanvas();
+        animate();
+    </script>
+
+
+</body>
+</html>

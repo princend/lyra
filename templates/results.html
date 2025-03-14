@@ -1,0 +1,141 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+
+<div>
+    <!-- 搜尋表單 -->
+
+
+    {% if search_results %}
+    
+    {% if search_results.artists.items %}
+    <h3>歌手:</h3>
+    <div class="result-container">
+        {% for artist in search_results.artists.items %}
+        <div class="result-item">
+            <strong>{{ artist.name }}</strong><br>
+            <div class="result-type">歌手</div>
+            {% if artist.images %}
+            <img src="{{ artist.images.0.url }}" alt="{{ artist.name }}"><br>
+            {% endif %}
+            粉絲數: {{ artist.followers.total }}<br>
+            音樂類型: {{ artist.genres|join:", " }}<br>
+            <span>
+                <a href="{{ artist.external_urls.spotify }}" target="_blank">查看 Spotify</a>
+                <a href="https://music.apple.com/ch/search?term={{ artist.name }}" target="_blank">查看 Apple Music</a>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if search_results.albums.items %}
+    <h3>專輯:</h3>
+    <div class="result-container">
+        {% for album in search_results.albums.items %}
+        <div class="result-item">
+            <strong>{{ album.name }}</strong><br>
+            <div class="result-type">專輯</div>
+            {% if album.images %}
+            <img src="{{ album.images.0.url }}" alt="{{ album.name }}"><br>
+            {% endif %}
+            發行日期: {{ album.release_date }}<br>
+            <span>
+                <a href="{{ album.external_urls.spotify }}" target="_blank">查看 Spotify</a>
+                <a href="https://music.apple.com/ch/search?term={{ album.name }}" target="_blank">查看 Apple Music</a>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if search_results.tracks.items %}
+    <h3>曲目:</h3>
+    <div class="result-container">
+        {% for track in search_results.tracks.items %}
+        <div class="result-item">
+            <strong>{{ track.name }}</strong><br>
+            <div class="result-type">曲目</div>
+            {% if track.album.images %}
+            <img src="{{ track.album.images.0.url }}" alt="{{ track.name }}"><br>
+            {% endif %}
+            專輯: {{ track.album.name }}<br>
+            <span>
+                <a href="{{ track.external_urls.spotify }}" target="_blank">查看 Spotify</a>
+                <a href="https://music.apple.com/ch/search?term={{ track.name }}" target="_blank">查看 Apple Music</a>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if recommendations %}
+    <h2>推薦結果:</h2>
+
+    {% if recommendations.artists %}
+    <h3>推薦歌手:</h3>
+    <div class="result-container">
+        {% for artist in recommendations.artists %}
+        <div class="result-item">
+            <strong>{{ artist.name }}</strong><br>
+            <div class="result-type">歌手</div>
+            {% if artist.images %}
+            <img src="{{ artist.images.0.url }}" alt="{{ artist.name }}"><br>
+            {% endif %}
+            粉絲數: {{ artist.followers.total }}<br>
+            音樂類型: {{ artist.genres|join:", " }}<br>
+            <span>
+                <a href="{{ artist.external_urls.spotify }}" target="_blank">查看 Spotify</a>
+                <a href="https://music.apple.com/ch/search?term={{ artist.name }}" target="_blank">查看 Apple Music</a>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if recommendations.albums %}
+    <h3>推薦專輯:</h3>
+    <div class="result-container">
+        {% for album in recommendations.albums %}
+        <div class="result-item">
+            <strong>{{ album.name }}</strong><br>
+            <div class="result-type">專輯</div>
+            {% if album.images %}
+            <img src="{{ album.images.0.url }}" alt="{{ album.name }}"><br>
+            {% endif %}
+            發行日期: {{ album.release_date }}<br>
+            <span>
+                <a href="{{ album.external_urls.spotify }}" target="_blank">查看 Spotify</a>
+                <a href="https://music.apple.com/ch/search?term={{ artist.name }}" target="_blank">查看 Apple Music</a>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if recommendations.tracks %}
+    <h3>推薦歌曲:</h3>
+    <div class="result-container">
+        {% for track in recommendations.tracks %}
+        <div class="result-item">
+            <strong>{{ track.name }}</strong><br>
+            <div class="result-type">曲目</div>
+            {% if track.album.images %}
+            <img src="{{ track.album.images.0.url }}" alt="{{ track.name }}"><br>
+            {% endif %}
+            專輯: {{ track.album.name }}<br>
+            <span>
+                <a href="{{ track.external_urls.spotify }}" target="_blank">查看 Spotify</a>
+                <a href="https://music.apple.com/ch/search?term={{ track.name }}" target="_blank">查看 Apple Music</a>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endif %}
+    {% else %}
+    <p>沒有搜尋結果</p>
+    {% endif %}
+</div>
+{% endblock %}

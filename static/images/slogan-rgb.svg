@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 100">
+  <defs>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="red">
+        <animate attributeName="stop-color" values="red;green;blue;red" dur="5s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="100%" stop-color="blue">
+        <animate attributeName="stop-color" values="blue;red;green;blue" dur="5s" repeatCount="indefinite" />
+      </stop>
+    </linearGradient>
+  </defs>
+  <text x="10" y="50" font-family="Arial, sans-serif" font-size="40" fill="url(#textGradient)">
+    Link Your Rhythms Anytime
+  </text>
+</svg>
