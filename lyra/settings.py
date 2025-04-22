@@ -131,3 +131,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SPOTIFY_CLIENT_ID = '5f9a1bfd2be944b580cdcd1057cc1b2d'
 SPOTIFY_CLIENT_SECRET = 'fdf34388340844ab8d00f61ad912cd88'
+
+# Login/Logout Redirect URLs
+LOGIN_REDIRECT_URL = '/' 
+# LOGOUT_REDIRECT_URL = '/' # Optional, can be set in LogoutView
