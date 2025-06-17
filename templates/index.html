@@ -4,11 +4,299 @@
 <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
 <link rel="icon" href="{% static 'images/lyra.svg' %}" type="image/x-icon" />
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="is-color1">
+
 <head>
     <meta charset="UTF-8">
     <title>Lyra - Link Your Rhythms Anytime</title>
     <style>
+        html.is-color1 {
+            --themeColor: linear-gradient(135deg, #FF9800 0%, #FF5E62 100%);
+            /* 橙到粉紅 */
+            ;
+        }
+
+        .mouseCursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            user-select: none;
+            z-index: 200;
+            transition: opacity 0.4s linear 0.4s;
+            backface-visibility: hidden;
+        }
+
+        .mouseCursor.is-visible {
+            opacity: 1;
+        }
+
+        .mouseCursor__frameContainer,
+        .mouseCursor__frame {
+            position: absolute;
+            backface-visibility: hidden;
+        }
+
+        .mouseCursor__frameContainer {
+            z-index: 201;
+            transform: translate(956px, 315px);
+        }
+
+        .mouseCursor__frame {
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            overflow: hidden;
+            will-change: transform, width, height, border-radius;
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+                width 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+                height 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+                background-color 0.4s linear,
+                -webkit-transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 2px solid #FF9800;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .mouseCursor__frame:before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: url(https://kazukinoda.com/img/bgTexture.webp) 0 0;
+            background-size: 500px 500px;
+            content: "";
+            opacity: 0;
+            -webkit-transition: opacity 0.2s linear;
+            transition: opacity 0.2s linear;
+        }
+
+        .mouseCursor__frame:after {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-image: url(https://kazukinoda.com/img/noise.png);
+            pointer-events: none !important;
+            background-size: 250px 250px;
+            -webkit-animation: noiseTextureAnim 0.55s steps(1) infinite;
+            animation: noiseTextureAnim 0.55s steps(1) infinite;
+            will-change: background-position;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            content: "";
+            opacity: 0;
+            -webkit-transition: opacity 0.2s linear;
+            transition: opacity 0.2s linear;
+        }
+
+        .mouseCursor__label {
+            font-weight: 700;
+            opacity: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            font-size: 12px;
+            text-align: center;
+            color: #fff;
+            z-index: 2;
+            -webkit-transition: color 0.4s linear, opacity 0.4s linear;
+            transition: color 0.4s linear, opacity 0.4s linear;
+        }
+
+        .mouseCursor__icon,
+        .mouseCursor__label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .mouseCursor__loadingSpinner {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 2;
+            -webkit-animation: loadingSpinnerAnim-data-v-6b61cbe4 1s linear infinite;
+            animation: loadingSpinnerAnim-data-v-6b61cbe4 1s linear infinite;
+            -webkit-animation-play-state: paused;
+            animation-play-state: paused;
+            -webkit-transition: opacity 0.2s linear, visibility 0.2s linear;
+            transition: opacity 0.2s linear, visibility 0.2s linear;
+        }
+
+        .mouseCursor__loadingSpinner svg {
+            -webkit-transition: stroke 0.4s linear;
+            transition: stroke 0.4s linear;
+            stroke-dasharray: 246px;
+            stroke-dashoffset: -246px;
+            stroke: #FF5E62;
+            fill: transparent;
+            stroke-width: 2px;
+            -webkit-animation: loadingSpinnerSVGAnim-data-v-6b61cbe4 1.6s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+            animation: loadingSpinnerSVGAnim-data-v-6b61cbe4 1.6s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+            -webkit-animation-play-state: paused;
+            animation-play-state: paused;
+        }
+
+        .mouseCursor__loadingSpinner svg,
+        .mouseCursor__loadingSpinner {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .mouseCursor__iconContainer {
+            // transform: translate(956px, 315px);
+        }
+
+        .mouseCursor__iconContainer {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            position: absolute;
+            z-index: 201;
+        }
+
+        .mouseCursor__icon {
+            -webkit-transition: background-color 0.4s linear, opacity 0.2s linear;
+            transition: background-color 0.4s linear, opacity 0.2s linear;
+            background-color: #FF5E62;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        @keyframes noiseTextureAnim {
+            0% {
+                background-position: 0 0;
+            }
+
+            10% {
+                background-position: 10px 10px;
+            }
+
+            20% {
+                background-position: 150px 20px;
+            }
+
+            30% {
+                background-position: 125px 125px;
+            }
+
+            40% {
+                background-position: 40px 170px;
+            }
+
+            50% {
+                background-position: 125px 125px;
+            }
+
+            60% {
+                background-position: 90px 10px;
+            }
+
+            70% {
+                background-position: 60px 100px;
+            }
+
+            80% {
+                background-position: 20px 70px;
+            }
+
+            90% {
+                background-position: 120px 80px;
+            }
+
+            to {
+                background-position: 0 250px;
+            }
+        }
+
+        @-webkit-keyframes loadingSpinnerAnim-data-v-6b61cbe4 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(1turn);
+                transform: rotate(1turn);
+            }
+        }
+
+        @keyframes loadingSpinnerAnim-data-v-6b61cbe4 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(1turn);
+                transform: rotate(1turn);
+            }
+        }
+
+        @-webkit-keyframes loadingSpinnerSVGAnim-data-v-6b61cbe4 {
+            0% {
+                stroke-dashoffset: 246px;
+            }
+
+            10% {
+                stroke-dashoffset: 246px;
+            }
+
+            50% {
+                stroke-dashoffset: 0;
+            }
+
+            90% {
+                stroke-dashoffset: -246px;
+            }
+
+            to {
+                stroke-dashoffset: -246px;
+            }
+        }
+
+        @keyframes loadingSpinnerSVGAnim-data-v-6b61cbe4 {
+            0% {
+                stroke-dashoffset: 246px;
+            }
+
+            10% {
+                stroke-dashoffset: 246px;
+            }
+
+            50% {
+                stroke-dashoffset: 0;
+            }
+
+            90% {
+                stroke-dashoffset: -246px;
+            }
+
+            to {
+                stroke-dashoffset: -246px;
+            }
+        }
+
         #glcanvas {
             position: fixed;
             top: 0;
@@ -149,7 +437,7 @@
             overflow: hidden;
             box-sizing: border-box;
             margin-top: 105px;
-            margin-left:185px;
+            margin-left: 185px;
         }
 
         .marquee span {
@@ -337,7 +625,7 @@
         }
 
         .fav-frame {
-            
+
             width: calc(100% - 25px);
             padding: 10px;
             height: calc(100% - 350px);
@@ -416,6 +704,9 @@
                 /* 调整图标大小 */
                 margin-right: 5px;
             }
+            .left-search-btn{
+                margin-left: 200px;
+            }
         }
 
         .file-input-container {
@@ -440,6 +731,17 @@
             max-width: 100%;
             height: auto;
         }
+
+        @media (max-width: 1440px) {
+            .file-input-container img {
+                display: block;
+                max-width: 100%;
+                height: auto;
+                margin-right: 30px;
+            }
+        }
+
+
 
         .search-input-bar {
             height: 60px;
@@ -555,7 +857,24 @@
 
 
 </head>
+
 <body>
+    <div class="mouseCursor is-visible is-defaultMode">
+        <div class="mouseCursor__frameContainer">
+            <div class="mouseCursor__frame">
+                <div class="mouseCursor__label">View</div>
+                <div class="mouseCursor__loadingSpinner">
+                    <svg viewBox="0 0 80 80">
+                        <circle cx="40" cy="40" r="39"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="mouseCursor__iconContainer">
+            <div class="mouseCursor__icon">
+            </div>
+        </div>
+    </div>
     <div id="loading-overlay">
         <div id="loading-content">
             <!-- 這裡放置你的SVG -->
@@ -619,10 +938,10 @@
                         <form id="uploadForm" action="{% url 'search' %}" method="post" enctype="multipart/form-data"
                             style="margin-top:5px;">
                             {% csrf_token %}
-                            <label class="file-input-container">
+                            <label class="file-input-container" style="width:80px;">
 
                                 <img src="{% static 'images/camera-fill.svg' %}" alt=""
-                                    style="width:77px;height:80px;padding-left:200px;">
+                                    style="width:77px;height:80px;">
                                 <input type="file" name="file" accept=".png,.jpg,.jpeg" onchange="autoImageSubmit()">
                                 <button style="display:none" id="upload-image-btn" type="submit" name="upload"></button>
                             </label>
@@ -892,7 +1211,20 @@
         resizeCanvas();
         animate();
     </script>
+    <script>
+        var icon = document.getElementsByClassName('mouseCursor__iconContainer')
 
+        var frame = document.getElementsByClassName('mouseCursor__frameContainer')
+
+        window.addEventListener('mousemove', e => {
+            icon[0].style = `transform: translate(${e.clientX}px, ${e.clientY}px);`
+            setTimeout(() => {
+                frame[0].style = `transform: translate(${e.clientX}px, ${e.clientY}px);`
+            }, 100)
+        });
+
+    </script>
 
 </body>
+
 </html>

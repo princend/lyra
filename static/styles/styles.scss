@@ -166,4 +166,10 @@ body, html {
         width: 100%;
         justify-content: center;
     }
+    .file-input-container img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin-right: 30px;
+    }
 }
