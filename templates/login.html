@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome 歡迎!!!</title>
+    <link rel="stylesheet" href="/static/styles/styles.scss">
+    <style>
+        body {
+            min-height: 100vh;
+            /* 使用深色漸層背景 */
+            background: linear-gradient(135deg, #23243a 0%, #4B0082 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: rgba(240, 240, 240, 0.95);
+            padding: 40px 32px 32px 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            width: 100%;
+            max-width: 350px;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .login-card h2 {
+            margin-bottom: 24px;
+            color: rgba(31, 38, 135, 0.37);
+            letter-spacing: 2px;
+        }
+        .login-card label {
+            align-self: flex-start;
+            margin-bottom: 6px;
+            margin-top: 12px;
+            color: rgba(31, 38, 135, 0.99);
+        }
+        .login-card input[type="text"],
+        .login-card input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 8px;
+            background: #22224a;
+            color: #fff;
+            font-size: 16px;
+        }
+        .login-card button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: var(--secondary-color);
+            color: rgba(31, 38, 135, 0.75);
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 18px;
+            transition: background 0.2s;
+        }
+        .login-card button:hover {
+            background: #C0C9EE;
+            color:white;
+        }
+        .login-card ul {
+            padding: 0;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .login-card li {
+            color: #ff6b6b;
+            list-style: none;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2>Welcome, User!</h2>
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <label for="username">帳號</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">密碼</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">登入</button>
+        </form>
+    </div>
+</body>
+</html> 

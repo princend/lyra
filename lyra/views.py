@@ -4,9 +4,11 @@ import requests
 import pandas as pd
 import pdfplumber
 import docx
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from django.apps import apps
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 from django.views.decorators.csrf import csrf_exempt
 import cv2
@@ -206,4 +208,16 @@ def send_image_to_api(image_file):
     except Exception as error:
         print('error is ',error)
         print('傳輸圖片檔案錯誤')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')  # 登入成功後導向首頁，可依需求修改
+        else:
+            messages.error(request, '帳號或密碼錯誤')
+    return render(request, 'login.html')
         

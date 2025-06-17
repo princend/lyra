@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('search',views.search,name='search'),
     path("__reload__/", include("django_browser_reload.urls")),
+    path('login/', views.login_view, name='login'),
 ]
 
 if settings.DEBUG:
