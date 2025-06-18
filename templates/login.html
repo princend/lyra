@@ -273,21 +273,21 @@
 
         .user-login .lyra-2 {
             position: absolute;
-            width: 310px;
-            height: 500px;
-            top: 120px;
-            left: 320px;
+            width: 15vw;
+            height: 50vh;
+            top: 15vh;
+            left: 26vw;
             background-image: url("{% static 'images/lyra4.png' %}");
             background-size: cover;
-            background-position: 50% 50%;
+            /* background-position: 50% 50%; */
         }
 
         .user-login .img {
             position: absolute;
-            width: 470px;
-            height: 163px;
-            top: 656px;
-            left: 239px;
+            width: 15vw;
+            height: 10vh;
+            left: 25vw;
+            bottom: 20vh;
         }
 
         .user-login .lyra-wrapper {
@@ -338,22 +338,24 @@
             left: 0;
         }
 
-        body, html {
+        body,
+        html {
             height: 100%;
             margin: 0;
             padding: 0;
         }
+
         .login-glass {
             position: absolute;
             top: 50%;
             left: 70%;
             transform: translate(-50%, -50%);
-            width: 400px;
-            height: 600px;
+            width: 23vw;
+            height: 80vh;
             padding: 40px 32px 32px 32px;
-            background: rgba(255,255,255,0.18);
+            background: rgba(255, 255, 255, 0.18);
             border-radius: 18px;
-            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             display: flex;
@@ -361,6 +363,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .login-close {
             position: absolute;
             top: 18px;
@@ -373,20 +376,24 @@
             z-index: 2;
             transition: color 0.2s;
         }
+
         .login-close:hover {
             color: #4B0082;
         }
+
         .login-icon {
             font-size: 44px;
             margin-bottom: 12px;
             color: #fff;
         }
+
         .login-glass h2 {
             margin: 0 0 28px 0;
             color: #fff;
             letter-spacing: 2px;
             font-weight: 600;
         }
+
         .login-glass label {
             align-self: flex-start;
             color: #fff;
@@ -395,21 +402,24 @@
             font-size: 16px;
             font-weight: 500;
         }
+
         .input-group {
             position: relative;
             width: 100%;
             margin-bottom: 18px;
         }
+
         .input-group input {
             width: 100%;
             padding: 12px 40px 12px 14px;
             border-radius: 8px;
             border: none;
-            background: rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.5);
             color: #22224a;
             font-size: 17px;
             outline: none;
         }
+
         .input-icon {
             position: absolute;
             right: 12px;
@@ -419,6 +429,7 @@
             color: #fff;
             pointer-events: none;
         }
+
         .login-btn {
             width: 100%;
             padding: 14px;
@@ -432,10 +443,12 @@
             margin-top: 28px;
             transition: background 0.2s;
         }
+
         .login-btn:hover {
             background: #e0e0e0;
             color: #4B0082;
         }
+
         @media (max-width: 600px) {
             .login-glass {
                 width: 95vw;
@@ -446,6 +459,7 @@
                 top: 50%;
                 transform: translate(-50%, -50%);
             }
+
             .user-login .overlap {
                 width: 100vw;
                 height: 100vh;
@@ -457,35 +471,43 @@
                 align-items: center;
                 justify-content: center;
             }
+
             .desktop {
                 display: none !important;
             }
+
             .login-icon {
                 font-size: 32px;
                 margin-bottom: 8px;
             }
+
             .login-glass h2 {
                 font-size: 22px;
                 margin-bottom: 18px;
             }
+
             .login-glass label {
                 font-size: 13px;
                 margin-top: 10px;
                 margin-bottom: 4px;
             }
+
             .input-group input {
                 font-size: 14px;
                 padding: 10px 32px 10px 10px;
             }
+
             .input-icon {
                 font-size: 16px;
                 right: 8px;
             }
+
             .login-btn {
                 font-size: 15px;
                 padding: 10px;
                 margin-top: 16px;
             }
+
             .login-close {
                 font-size: 22px;
                 top: 10px;
