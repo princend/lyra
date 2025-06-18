@@ -5,6 +5,7 @@ import face_recognition
 import os
 from django.conf import settings
 import time
+from .chroma import query, storeToDb
 
 tolerance = 0.6    
 
@@ -36,30 +37,50 @@ def preprocessing_encode():
         json.dump(known_face_list, file, ensure_ascii=False, indent=4)
 
     return known_face_list, [data['encode'] for data in known_face_list]
-    
-#辨認    
-def recognize(img_input, known_face_list, known_face_encodes, tolerance=0.6) -> str:
+
+# encode 要辨識的圖片
+def encode_current_face(img_input, tolerance=0.6)->list:
     img = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
     cur_face_locs = face_recognition.face_locations(img)
     cur_face_encodes = face_recognition.face_encodings(img, cur_face_locs, model='small')
-
-    if not cur_face_encodes:
+    cur_face_encodes_list=cur_face_encodes[0].tolist()
+    return cur_face_encodes_list
+    
+#辨認    
+# def recognize(img_input, known_face_list, known_face_encodes, tolerance=0.6) -> str:
+def recognize(img_input, tolerance=0.3) -> str:
+    # img = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
+    # cur_face_locs = face_recognition.face_locations(img)
+    # cur_face_encodes = face_recognition.face_encodings(img, cur_face_locs, model='small')
+    encode_face_list = encode_current_face(img_input)
+    # print(encode_face_list)
+    db_result= query(encode_face_list)
+    # print(db_result)
+    distance=db_result['distances'][0][0]
+    # tolerance=0.3
+    
+    if(distance>tolerance):
         return 'unknown'
+    else:
+        name_value = db_result['metadatas'][0][0]['name']
+        return name_value;
+    # if not cur_face_encodes:
+    #     return 'unknown'
     
-    results = []
-    for cur_face_encode in cur_face_encodes:
-        face_distance_list = face_recognition.face_distance(known_face_encodes, cur_face_encode)
-        min_distance_index = np.argmin(face_distance_list)
-        if face_distance_list[min_distance_index] < tolerance:
-            result = known_face_list[min_distance_index]['name']
-        else:
-            result = 'unknown'
-        results.append(result)    
+    # results = []
+    # for cur_face_encode in cur_face_encodes:
+    #     face_distance_list = face_recognition.face_distance(known_face_encodes, cur_face_encode)
+    #     min_distance_index = np.argmin(face_distance_list)
+    #     if face_distance_list[min_distance_index] < tolerance:
+    #         result = known_face_list[min_distance_index]['name']
+    #     else:
+    #         result = 'unknown'
+    #     results.append(result)    
     
-    if len(results)>=1:
-       return results[0]
-    elif len(results)==0:
-       return 'unknown'
+    # if len(results)>=1:
+    #    return results[0]
+    # elif len(results)==0:
+    #    return 'unknown'
     
         
 def load_encodings(json_file):
@@ -77,18 +98,35 @@ def load_encodings(json_file):
 
 # 預載入歌手 encoding表
 def load():
+    print('load')
     start_time = time.time()  # 記錄開始時間
     print('execute load funcion ')
     json_file = os.path.join(settings.MEDIA_ROOT, 'json', 'singer-map-with-encodings.json')
-    # global known_face_list, known_face_encodes
+    global known_face_list, known_face_encodes
     if not os.path.exists(json_file):
        print(f'{json_file} not found. Running preprocessing_encode...')
        known_face_list, known_face_encodes = preprocessing_encode()
     else:
         print(f'{json_file} found. Loading encodings...')
         known_face_list, known_face_encodes = load_encodings(json_file)
+    
+    storeToDb(known_face_list)
     end_time = time.time()  # 記錄結束時間
     execution_time = end_time - start_time  # 計算執行時間
+    
     print(f'Load function executed in {execution_time:.2f} seconds')
-    return known_face_list,known_face_encodes
+    # start_time = time.time()  # 記錄開始時間
+    # print('execute load funcion ')
+    # json_file = os.path.join(settings.MEDIA_ROOT, 'json', 'singer-map-with-encodings.json')
+    # # global known_face_list, known_face_encodes
+    # if not os.path.exists(json_file):
+    #    print(f'{json_file} not found. Running preprocessing_encode...')
+    #    known_face_list, known_face_encodes = preprocessing_encode()
+    # else:
+    #     print(f'{json_file} found. Loading encodings...')
+    #     known_face_list, known_face_encodes = load_encodings(json_file)
+    # end_time = time.time()  # 記錄結束時間
+    # execution_time = end_time - start_time  # 計算執行時間
+    # print(f'Load function executed in {execution_time:.2f} seconds')
+    # return known_face_list,known_face_encodes
         

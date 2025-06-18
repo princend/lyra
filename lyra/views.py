@@ -142,9 +142,10 @@ def search(request):
                 npimg = np.frombuffer(file_bytes, np.uint8)
                 image  = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
                 MyAppConfig = apps.get_app_config('lyra')
-                known_face_list = MyAppConfig.get_known_face_list()
-                known_face_encodes = MyAppConfig.get_known_face_encodes()
-                result= recognize(image,known_face_list,known_face_encodes,tolerance=0.6)
+                # known_face_list = MyAppConfig.get_known_face_list()
+                # known_face_encodes = MyAppConfig.get_known_face_encodes()
+                # result= recognize(image,known_face_list,known_face_encodes,tolerance=0.6)
+                result= recognize(image,tolerance=0.3)
                 singer_text = result
                 access_token = get_access_token()
                 if singer_text=='unknown' or singer_text==None:

@@ -10,9 +10,10 @@ class LyraAppConfig(AppConfig):
     def ready(self):
         LyraAppConfig.vectorizer =CountVectorizer(tokenizer=lambda text:jieba.lcut_for_search(text))
         LyraAppConfig.kw_model = KeyBERT(model='distiluse-base-multilingual-cased-v1')
-        known_face_list,known_face_encodes=load()
-        LyraAppConfig.known_face_list=known_face_list
-        LyraAppConfig.known_face_encodes=known_face_encodes
+        load();
+        # known_face_list,known_face_encodes=load()
+        # LyraAppConfig.known_face_list=known_face_list
+        # LyraAppConfig.known_face_encodes=known_face_encodes
         
         # 可以将 `vectorizer` 存储在某个地方以便后续使用
         # 例如，将其存储在全局变量或通过 Django 信号传递

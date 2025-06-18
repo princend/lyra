@@ -555,6 +555,29 @@
             color: #666;
         }
 
+        .singer-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            /* max-width: 250px; */
+            object-fit: cover;
+            border-radius: 10px;
+            /* display: block; */
+        }
+
+        .placeholder-img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 18px;
+            background: #f3f3f3;
+            border: 2px dashed #ccc;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            /* max-width: 250px; */
+            border-radius: 10px;
+        }
+
         h2,
         h3 {
             color: #1db954;
@@ -704,7 +727,8 @@
                 /* 调整图标大小 */
                 margin-right: 5px;
             }
-            .left-search-btn{
+
+            .left-search-btn {
                 margin-left: 200px;
             }
         }
@@ -940,8 +964,7 @@
                             {% csrf_token %}
                             <label class="file-input-container" style="width:80px;">
 
-                                <img src="{% static 'images/camera-fill.svg' %}" alt=""
-                                    style="width:77px;height:80px;">
+                                <img src="{% static 'images/camera-fill.svg' %}" alt="" style="width:77px;height:80px;">
                                 <input type="file" name="file" accept=".png,.jpg,.jpeg" onchange="autoImageSubmit()">
                                 <button style="display:none" id="upload-image-btn" type="submit" name="upload"></button>
                             </label>
