@@ -108,6 +108,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="globals.css" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 
     <style>
         @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
@@ -336,6 +337,105 @@
             top: 426px;
             left: 0;
         }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .login-glass {
+            position: absolute;
+            top: 50%;
+            left: 70%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 600px;
+            padding: 40px 32px 32px 32px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 2;
+            transition: color 0.2s;
+        }
+        .login-close:hover {
+            color: #4B0082;
+        }
+        .login-icon {
+            font-size: 44px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        .login-glass h2 {
+            margin: 0 0 28px 0;
+            color: #fff;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .login-glass label {
+            align-self: flex-start;
+            color: #fff;
+            margin-bottom: 8px;
+            margin-top: 18px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .input-group {
+            position: relative;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 40px 12px 14px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.5);
+            color: #22224a;
+            font-size: 17px;
+            outline: none;
+        }
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #fff;
+            pointer-events: none;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            background: #4B0082;
+            color: #fff;
+            font-size: 19px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 28px;
+            transition: background 0.2s;
+        }
+        .login-btn:hover {
+            background: #e0e0e0;
+            color: #4B0082;
+        }
     </style>
 </head>
 
@@ -343,15 +443,15 @@
     <div class="user-login">
         <div class="overlap">
             <div class="desktop">
-                <button class="button">
+                <!-- <button class="button">
                     <div class="sign-in">Log in</div>
-                </button>
-                <div class="rectangle"></div>
+                </button> -->
+                <!-- <div class="rectangle"></div> -->
                 <!-- <div class="overlap-group"><img class="image" src="img/image.svg" /></div> -->
-                <div class="text-wrapper">Password</div>
-                <div class="div">Email address</div>
+                <!-- <div class="text-wrapper">Password</div> -->
+                <!-- <div class="div">Email address</div> -->
                 <!-- <img class="close-button" src="img/close-button.svg" /> -->
-                <div class="text-wrapper-2">Login</div>
+                <!-- <div class="text-wrapper-2">Login</div> -->
                 <!-- <img class="lyra" src="img/lyra-1.svg" /> -->
                 <div class="lyra-2"></div>
                 <img class="img" src="{% static 'images/lyra2.png' %}" />
@@ -362,15 +462,25 @@
             </div>
             <!-- <img class="gmail" src="img/gmail.svg" /> -->
             <!-- 右側登入表單 -->
-            <form class="login-form" method="post" style="position:absolute; top:30%; right:10%; width:350px; background:rgba(255,255,255,0.85); border-radius:16px; box-shadow:0 8px 32px 0 rgba(31,38,135,0.37); padding:32px; display:flex; flex-direction:column; align-items:center;">
-                {% csrf_token %}
-                <h2 style="color:#4B0082; margin-bottom:24px;">Login</h2>
-                <label for="username" style="align-self:flex-start; color:#4B0082; margin-bottom:6px;">Email address</label>
-                <input type="text" id="username" name="username" required style="width:100%; padding:10px; border-radius:8px; border:none; margin-bottom:16px; background:#22224a; color:#fff; font-size:16px;">
-                <label for="password" style="align-self:flex-start; color:#4B0082; margin-bottom:6px;">Password</label>
-                <input type="password" id="password" name="password" required style="width:100%; padding:10px; border-radius:8px; border:none; margin-bottom:16px; background:#22224a; color:#fff; font-size:16px;">
-                <button type="submit" style="width:100%; padding:12px; border-radius:8px; border:none; background:#1DB954; color:#fff; font-size:18px; font-weight:bold; cursor:pointer; margin-top:18px; transition:background 0.2s;">Log in</button>
-            </form>
+            <div class="login-glass">
+                <button class="login-close" onclick="window.location.href='/'" title="關閉">&times;</button>
+                <div class="login-icon"><i class="fa-solid fa-user"></i></div>
+                <h2>Login</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="username">Email address</label>
+                    <div class="input-group">
+                        <input type="text" id="username" name="username" required placeholder="Email address">
+                        <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+                    </div>
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" required placeholder="Password">
+                        <span class="input-icon"><i class="fa-solid fa-eye"></i></span>
+                    </div>
+                    <button type="submit" class="login-btn">Log in</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
