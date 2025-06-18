@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+{% load static %}
+<!-- <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
@@ -97,4 +98,264 @@
         </form>
     </div>
 </body>
-</html> 
+</html>  -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+        * {
+            -webkit-font-smoothing: antialiased;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0px;
+            height: 100%;
+        }
+
+        /* a blue color as a generic focus style */
+        button:focus-visible {
+            outline: 2px solid #4a90e2 !important;
+            outline: -webkit-focus-ring-color auto 5px !important;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .user-login {
+            width: 1920px;
+            height: 1080px;
+            background-color: #ffffff;
+        }
+
+        .user-login .overlap {
+            position: relative;
+            height: 1080px;
+            background-image: url("{% static 'images/unsplash_wQLAGv4_OYs.png' %}");
+            background-size: cover;
+            background-position: 50% 50%;
+        }
+
+        .user-login .desktop {
+            position: absolute;
+            width: 1920px;
+            height: 1080px;
+            top: 0;
+            left: 0;
+        }
+
+        .user-login .button {
+            all: unset;
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 16px;
+            position: absolute;
+            top: 766px;
+            left: 1359px;
+            background-color: #e3e3e3;
+            border-radius: 999px;
+        }
+
+        .user-login .sign-in {
+            position: relative;
+            width: fit-content;
+            margin-top: -1.00px;
+            font-family: "Average-Regular", Helvetica;
+            font-weight: 400;
+            color: #000000;
+            font-size: 32px;
+            letter-spacing: 0;
+            line-height: normal;
+        }
+
+        .user-login .rectangle {
+            position: absolute;
+            width: 489px;
+            height: 61px;
+            top: 420px;
+            left: 1169px;
+            background-color: #ffffff66;
+        }
+
+        .user-login .overlap-group {
+            position: absolute;
+            width: 489px;
+            height: 61px;
+            top: 611px;
+            left: 1169px;
+            background-color: #ffffff66;
+        }
+
+        .user-login .image {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 11px;
+            left: 435px;
+        }
+
+        .user-login .text-wrapper {
+            position: absolute;
+            width: 174px;
+            top: 541px;
+            left: 1170px;
+            font-family: "Ramabhadra-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 36px;
+            letter-spacing: 0;
+            line-height: normal;
+        }
+
+        .user-login .div {
+            position: absolute;
+            width: 248px;
+            top: 329px;
+            left: 1170px;
+            font-family: "Ramabhadra-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 36px;
+            letter-spacing: 0;
+            line-height: normal;
+        }
+
+        .user-login .close-button {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 90px;
+            left: 1677px;
+        }
+
+        .user-login .text-wrapper-2 {
+            position: absolute;
+            width: 148px;
+            top: 223px;
+            left: 1339px;
+            font-family: "Ramabhadra-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 48px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: normal;
+        }
+
+        .user-login .lyra {
+            position: absolute;
+            width: 137px;
+            height: 47px;
+            top: 754px;
+            left: 1159px;
+        }
+
+        .user-login .lyra-2 {
+            position: absolute;
+            width: 307px;
+            height: 450px;
+            top: 90px;
+            left: 310px;
+            background-image: url("{% static 'images/lyra4.png' %}");
+            background-size: cover;
+            background-position: 50% 50%;
+        }
+
+        .user-login .img {
+            position: absolute;
+            width: 470px;
+            height: 163px;
+            top: 656px;
+            left: 239px;
+        }
+
+        .user-login .lyra-wrapper {
+            position: absolute;
+            width: 289px;
+            height: 114px;
+            top: 902px;
+            left: 276px;
+        }
+
+        .user-login .lyra-3 {
+            position: absolute;
+            width: 68px;
+            height: 100px;
+            top: 0;
+            left: 212px;
+        }
+
+        .user-login .lyra-4 {
+            position: absolute;
+            width: 137px;
+            height: 47px;
+            top: 969px;
+            left: 565px;
+        }
+
+        .user-login .lyra-5 {
+            position: absolute;
+            width: 137px;
+            height: 47px;
+            top: 960px;
+            left: 757px;
+        }
+
+        .user-login .lyra-6 {
+            position: absolute;
+            width: 198px;
+            height: 198px;
+            top: 845px;
+            left: 41px;
+        }
+
+        .user-login .gmail {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 426px;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="user-login">
+        <div class="overlap">
+            <div class="desktop">
+                <button class="button">
+                    <div class="sign-in">Log in</div>
+                </button>
+                <div class="rectangle"></div>
+                <!-- <div class="overlap-group"><img class="image" src="img/image.svg" /></div> -->
+                <div class="text-wrapper">Password</div>
+                <div class="div">Email address</div>
+                <!-- <img class="close-button" src="img/close-button.svg" /> -->
+                <div class="text-wrapper-2">Login</div>
+                <!-- <img class="lyra" src="img/lyra-1.svg" /> -->
+                <div class="lyra-2"></div>
+                <img class="img" src="{% static 'images/lyra2.png' %}" />
+                <!-- <div class="lyra-wrapper"><img class="lyra-3" src="img/lyra-2-2.svg" /></div> -->
+                <!-- <img class="lyra-4" src="img/lyra-1-2.svg" /> -->
+                <!-- <img class="lyra-5" src="img/lyra-2-3.svg" /> -->
+                <!-- <img class="lyra-6" src="img/lyra-1-3.svg" /> -->
+            </div>
+            <!-- <img class="gmail" src="img/gmail.svg" /> -->
+        </div>
+    </div>
+</body>
+
+</html>
