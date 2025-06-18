@@ -156,11 +156,11 @@
         }
 
         .user-login .desktop {
-            position: absolute;
-            width: 1920px;
-            height: 1080px;
-            top: 0;
-            left: 0;
+            /* position: absolute; */
+            /* width: 1920px; */
+            /* height: 1080px; */
+            /* top: 0; */
+            /* left: 0; */
         }
 
         .user-login .button {
@@ -435,6 +435,55 @@
         .login-btn:hover {
             background: #e0e0e0;
             color: #4B0082;
+        }
+        @media (max-width: 600px) {
+            .login-glass {
+                width: 95vw;
+                height: auto;
+                min-height: unset;
+                padding: 20px 8px 16px 8px;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .user-login .overlap {
+                width: 100vw;
+                height: 100vh;
+                min-height: 100vh;
+                background-size: cover;
+                background-position: center;
+            }
+            .login-icon {
+                font-size: 32px;
+                margin-bottom: 8px;
+            }
+            .login-glass h2 {
+                font-size: 22px;
+                margin-bottom: 18px;
+            }
+            .login-glass label {
+                font-size: 13px;
+                margin-top: 10px;
+                margin-bottom: 4px;
+            }
+            .input-group input {
+                font-size: 14px;
+                padding: 10px 32px 10px 10px;
+            }
+            .input-icon {
+                font-size: 16px;
+                right: 8px;
+            }
+            .login-btn {
+                font-size: 15px;
+                padding: 10px;
+                margin-top: 16px;
+            }
+            .login-close {
+                font-size: 22px;
+                top: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
