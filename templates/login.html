@@ -119,8 +119,11 @@
 
         html,
         body {
-            margin: 0px;
-            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
         }
 
         /* a blue color as a generic focus style */
@@ -134,17 +137,21 @@
         }
 
         .user-login {
-            width: 1920px;
-            height: 1080px;
-            background-color: #ffffff;
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            background-color: #fff;
+            overflow: hidden;
         }
 
         .user-login .overlap {
-            position: relative;
-            height: 1080px;
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
             background-image: url("{% static 'images/unsplash_wQLAGv4_OYs.png' %}");
             background-size: cover;
-            background-position: 50% 50%;
+            background-position: center;
+            overflow: hidden;
         }
 
         .user-login .desktop {
@@ -265,10 +272,10 @@
 
         .user-login .lyra-2 {
             position: absolute;
-            width: 307px;
-            height: 450px;
-            top: 90px;
-            left: 310px;
+            width: 310px;
+            height: 500px;
+            top: 120px;
+            left: 320px;
             background-image: url("{% static 'images/lyra4.png' %}");
             background-size: cover;
             background-position: 50% 50%;
@@ -354,6 +361,16 @@
                 <!-- <img class="lyra-6" src="img/lyra-1-3.svg" /> -->
             </div>
             <!-- <img class="gmail" src="img/gmail.svg" /> -->
+            <!-- 右側登入表單 -->
+            <form class="login-form" method="post" style="position:absolute; top:30%; right:10%; width:350px; background:rgba(255,255,255,0.85); border-radius:16px; box-shadow:0 8px 32px 0 rgba(31,38,135,0.37); padding:32px; display:flex; flex-direction:column; align-items:center;">
+                {% csrf_token %}
+                <h2 style="color:#4B0082; margin-bottom:24px;">Login</h2>
+                <label for="username" style="align-self:flex-start; color:#4B0082; margin-bottom:6px;">Email address</label>
+                <input type="text" id="username" name="username" required style="width:100%; padding:10px; border-radius:8px; border:none; margin-bottom:16px; background:#22224a; color:#fff; font-size:16px;">
+                <label for="password" style="align-self:flex-start; color:#4B0082; margin-bottom:6px;">Password</label>
+                <input type="password" id="password" name="password" required style="width:100%; padding:10px; border-radius:8px; border:none; margin-bottom:16px; background:#22224a; color:#fff; font-size:16px;">
+                <button type="submit" style="width:100%; padding:12px; border-radius:8px; border:none; background:#1DB954; color:#fff; font-size:18px; font-weight:bold; cursor:pointer; margin-top:18px; transition:background 0.2s;">Log in</button>
+            </form>
         </div>
     </div>
 </body>
